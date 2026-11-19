@@ -1,0 +1,19 @@
+name: Probe macOS 27 Focus
+
+on:
+  push:
+    branches:
+      - probe/macos27-focus
+
+jobs:
+  probe:
+    runs-on: xcode-27
+    steps:
+    - name: System version
+      run: sw_vers
+    - name: Old preference key
+      run: defaults read com.apple.controlcenter "NSStatusItem VisibleCC FocusModes" || echo "exit code $?"
+    - name: Focus assertion directory
+      run: ls -la ~/Library/DoNotDisturb/DB/ || echo "exit code $?"
+    - name: Focus assertion file
+      run: cat ~/Library/DoNotDisturb/DB/Assertions.json || echo "exit code $?"
